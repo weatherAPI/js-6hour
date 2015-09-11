@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Sample API</title> 
+        <style type="text/css">
+            body {
+              width: 300px;
+            }
+            div#header {
+              font-size: 18px;
+              font-weight: bold;
+              margin: 0 0 20px 0;
+              text-align: center;
+            }
+            div#wrapper {
+                float: left;
+                width: 300px;
+            }
+            img#icon {
+                float: left;
+                margin: 0 20px 0 0;
+            }
+            div.temp {
+                margin: 25px 0 0 0;
+                overflow: auto;
+            }
+            div.conditions {
+                overflow: auto;
+            }
+            div.item {
+                margin: 0 0 20px 0;
+                overflow: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="wrapper"></div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script>
+        $.ajax({
+            url: "http://api.weather.com/v2/forecast/hourly/6hour?geocode=34.06,-84.21&apiKey=tsybhwupcwn4mw55m77euxh6r5pe639b&format=json&language=en-US&units=e",
+            dataType: "json",
+            type: "GET",
+            success: function(json) {
+                for(var i = 0; i < json.forecasts.length; i++) {
+                    $('#wrapper').append("<div class='item' id='"+ i + "'/>");
+                    $("<img/>").attr({src:"https://api.wunderground.com/i/c/api/icon-" + json.forecasts[i].icon_code + ".svg", id:"icon"}).appendTo("#" + i);
+                    $("<div class='temp'>" + json.forecasts[i].temp + "&deg;&nbsp;(Feels Like:&nbsp;" + json.forecasts[i].feels_like + "&deg;)</div>").appendTo("#" + i);
+                    $("<div class='conditions'>" + json.forecasts[i].phrase_22char + "</div>").appendTo("#" + i);
+                }
+            }
+        });
+        </script>
+    </body>
+</html>
